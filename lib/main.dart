@@ -136,14 +136,36 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          myBloc.eventStreamSink.add(_counter);
+      floatingActionButton:
+      SizedBox(
+        width: 200,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              FloatingActionButton(
+                onPressed: (){
+                  myBloc.eventStreamSink.add(IncrementEvent(value: _counter));
 
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+                },
+                tooltip: 'Increment',
+                child: const Icon(Icons.add),
+              ),
+              // const SizedBox(
+              //   width: 50,
+              // ),
+              FloatingActionButton(
+                onPressed: (){
+                  myBloc.eventStreamSink.add(DecrementEvent(value: _counter));
+
+                },
+                tooltip: 'Increment',
+                child: const Icon(Icons.remove),
+              ),
+            ],
+          ),
+      ),
+
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
