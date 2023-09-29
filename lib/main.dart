@@ -110,59 +110,62 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            StreamBuilder(
-              stream: myBloc.stateStream,
-              builder: (context, snapshot) {
-                if(snapshot.hasData) {
-                  _counter= snapshot.data ?? 0; //
-                  return Text(
-                    '${snapshot.data}',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headlineMedium,
-                  );
-                }else{
-                  return Text(
-                    '0',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headlineMedium,
-                  );
-                }
-              }
-            ),
+            StreamBuilder<MyState>(
+                stream: myBloc.stateStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    MyState? state = snapshot.data;
+                    if (state is IncrementState) {
+                      _counter = state.value;
+                      return Text(
+                        '${state.value}',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      );
+                    } else if (state is DecrementState) {
+                      _counter = state.value;
+                      return Text(
+                        '${state.value}',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      );
+                    } else {
+                      return Container();
+                    }
+                  } else {
+                    // return
+                      // const CircularProgressIndicator();
+                    return Text(
+                      '0',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    );
+                  }
+                }),
           ],
         ),
       ),
-      floatingActionButton:
-      SizedBox(
+      floatingActionButton: SizedBox(
         width: 200,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              FloatingActionButton(
-                onPressed: (){
-                  myBloc.eventStreamSink.add(IncrementEvent(value: _counter));
-
-                },
-                tooltip: 'Increment',
-                child: const Icon(Icons.add),
-              ),
-              // const SizedBox(
-              //   width: 50,
-              // ),
-              FloatingActionButton(
-                onPressed: (){
-                  myBloc.eventStreamSink.add(DecrementEvent(value: _counter));
-
-                },
-                tooltip: 'Increment',
-                child: const Icon(Icons.remove),
-              ),
-            ],
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                myBloc.eventStreamSink.add(IncrementEvent(value: _counter));
+              },
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            ),
+            // const SizedBox(
+            //   width: 50,
+            // ),
+            FloatingActionButton(
+              onPressed: () {
+                myBloc.eventStreamSink.add(DecrementEvent(value: _counter));
+              },
+              tooltip: 'Increment',
+              child: const Icon(Icons.remove),
+            ),
+          ],
+        ),
       ),
 
       // This trailing comma makes auto-formatting nicer for build methods.
