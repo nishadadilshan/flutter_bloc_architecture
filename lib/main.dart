@@ -111,9 +111,10 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             StreamBuilder(
-              stream: myBloc.stream,
+              stream: myBloc.stateStream,
               builder: (context, snapshot) {
                 if(snapshot.hasData) {
+                  _counter= snapshot.data ?? 0; //
                   return Text(
                     '${snapshot.data}',
                     style: Theme
@@ -137,8 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          _counter++;
-          myBloc.streamSink.add(_counter);
+          myBloc.eventStreamSink.add(_counter);
 
         },
         tooltip: 'Increment',
